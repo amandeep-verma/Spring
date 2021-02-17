@@ -19,9 +19,10 @@ public class Company {
 		this.c = c;
 	}
 
-	public void drive()
+	public void moves()
 	{
 		System.out.println("Company-> "+ c);
+		c.drive();
 	}
 	
 }
