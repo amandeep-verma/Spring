@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!-- We have to use beans tags to link the keyword with a class -->
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<!-- To specify into the system that we are using annotation based configuration, also mention base packed location-->
+	<context:component-scan base-package="com.MyCompany.Telusko"></context:component-scan>
+
+	<!-- This is xml configuration -->
+	<bean id="vehicle" class="com.MyCompany.Telusko.Bike"></bean>
+
+	<!-- We can set the variable of class Tyre by using the property tag. Property tag calls the setter method to set the value-->
+	<bean id="tyre" class="com.MyCompany.Telusko.Tyre">
+		<!-- Setter Injection-->
+		<property name="brand" value="MRF"></property>
+	</bean>
+
+	<!-- To set varibale from constructor we use <constructor-arg> tag-->
+	<bean id="engine" class="com.MyCompany.Telusko.Engine">
+		<!-- Constructor Injection-->
+		<constructor-arg value="Rolls royce"></constructor-arg>
+	</bean>
+
+</beans>
