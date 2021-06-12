@@ -38,12 +38,12 @@ You would make a java file in your package which is the controller file. You wil
  the old package. In the service class, we will process the data and send it back. We will store the data using variables.
  
  In same method, to send the value back to client we will use ModelAndView class by creating its object. We have to specify 2 
- things for it. First, the setviewname() to define the view you want to call. Second, the addObject() to define what data you 
+ things for it. First, the setViewName() to define the view you want to call. Second, the addObject() to define what data you 
  want to send. And you will return the object of ModelView.
  The file(display.jsp) receiving the data will define how to display it on the user side.
 
 
- Instead of using Httpservlet request and and response objects to fetch the value of input, we can straight obtain the values in parameters
+ Instead of using Httpservlet request and response objects to fetch the value of input, we can straight obtain the values in parameters
  passing to function  by using the RequestParam annotation.
 
  */
