@@ -1,40 +1,20 @@
 package com.telusko.demoRest2;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+
 import java.util.List;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+
 @Path("aliens")
 public class AliensResource {
-
-	// @GET
-	// @Produces(MediaType.APPLICATION_XML)
-	// public List<Alien> getAlien()
-	// {
-	// Alien a1= new Alien();
-	// a1.setId(101);
-	// a1.setName("Jadoo");
-	// a1.setPoints(70);
-	//
-	// Alien a2= new Alien();
-	// a2.setId(102);
-	// a2.setName("Abbott");
-	// a2.setPoints(110);
-	//
-	//
-	// List<Alien> li = new ArrayList<Alien>();
-	// li.add(a1);
-	// li.add(a2);
-	//
-	// return li;
-	// }
 
 	static AlienRepository repo = new AlienRepository();
 
@@ -51,11 +31,7 @@ public class AliensResource {
 	public Alien createAlien(Alien a1) {
 		System.out.println(a1);
 		repo.create(a1);
-
-		// for(Alien a: repo.getaliens())
-		// {
-		// System.out.println(a);
-		// }
+		
 		System.out.println("RepoSize is " + repo.getaliens().size());
 
 		return a1;
@@ -79,5 +55,25 @@ public class AliensResource {
 		return repo.getalien(id);
 	}
 	
+	
+	@PUT
+	@Path("alien")
+	public Alien updateAlien(Alien a1) {
+		System.out.println(a1);
+		repo.update(a1);
+
+		return a1;
+	}
+	
+	@DELETE
+	@Path("alien/{id}")
+	public Alien deleteAlien(@PathParam("id") int id) {
+		Alien a = repo.getalien(id);
+		
+		if(a.getId()!=0)
+			repo.delete(id);
+
+		return a;
+	}
 	
 }

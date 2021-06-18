@@ -3,48 +3,124 @@ package com.telusko.demoRest2;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.sql.*;
+
 public class AlienRepository {
 
-	List<Alien> li;
+	Connection con = null;
 	
 	public AlienRepository() {
-		li = new ArrayList<Alien>();
-		
-		Alien a1= new Alien();
-		a1.setId(101);
-		a1.setName("Jadoo");
-		a1.setPoints(70);
-		
-		Alien a2= new Alien();
-		a2.setId(102);
-		a2.setName("Abbott");
-		a2.setPoints(110);
-		
-		li.add(a1);
-		li.add(a2);
+		String url = "jdbc:mysql://localhost:3306/restdb?serverTimezone=EST";
+		String username="root";
+		String password="Dingo@12";
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver"); 
+			con = DriverManager.getConnection(url,username,password);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public List<Alien> getaliens()
 	{
+		List<Alien> li = new ArrayList<Alien>();
+		String sql = "Select * from alien";
+		try {
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next())
+			{
+				Alien a = new Alien();
+				a.setId(rs.getInt(1));
+				a.setName(rs.getString(2));
+				a.setPoints(rs.getInt(3));
+				
+				li.add(a);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		return li;
 	}
 	
 	
 	public Alien getalien(int id)
 	{
-		Alien a1 = null;
-		for(Alien a:li)
-		{
-			if(a.getId() == id)
-				return a;
+		String sql = "Select * from alien where id="+id;
+		Alien a = new Alien();
+		try {
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			
+			if(rs.next())
+			{
+				a.setId(rs.getInt(1));
+				a.setName(rs.getString(2));
+				a.setPoints(rs.getInt(3));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		
-		return a1;
+		return a;
 	}
 
 	public void create(Alien a1) {
-		li.add(a1);
+		String sql = "Insert into alien values (?,?,?)";
+		
+		try {
+			PreparedStatement st = con.prepareStatement(sql);
+			st.setInt(1, a1.getId());
+			st.setString(2, a1.getName());
+			st.setInt(3, a1.getPoints());
+			st.executeUpdate();
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("New Alien added");
+	}
+	
+	
+	public void update(Alien a1) {
+		String sql = "update alien set name =?, points=? where id = ?";
+		int num=0;
+		try {
+			PreparedStatement st = con.prepareStatement(sql);
+			st.setString(1, a1.getName());
+			st.setInt(2, a1.getPoints());
+			st.setInt(3, a1.getId());
+			
+			num = st.executeUpdate();
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("Alien updated "+num+ " enteries");
+	}
+
+	public void delete(int id) {
+		String sql = "delete from  alien where id = ?";
+		int num=0;
+		try {
+			PreparedStatement st = con.prepareStatement(sql);
+			st.setInt(1,id);
+			
+			num = st.executeUpdate();
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("Alien deleted "+num+ " enteries");
 		
 	}
+	
+	
 	
 }
